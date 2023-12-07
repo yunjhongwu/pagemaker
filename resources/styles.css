@@ -1,0 +1,31 @@
+body {
+    font-family: sans-serif
+}
+
+.table {
+    display: table;
+    border-collapse: collapse;
+}
+
+.row {
+    display: table-row;
+    border-bottom: 1px solid #bbbbbb;
+}
+
+.field {
+    display: table-cell;
+    padding: 10px;
+}
+
+.row:first-child  {
+    background: #eeeeee;
+    border-top: 1px solid #000000;
+}
+
+.row:last-child  {
+    border-bottom: 1px solid #000000;
+}
+
+.span {
+    background-color:rgba(0,1,0,0.0);
+}
