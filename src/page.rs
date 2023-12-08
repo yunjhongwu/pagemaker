@@ -1,11 +1,20 @@
 use crate::Object;
 use anyhow::Result;
+use regex::Regex;
 use std::fs;
 use std::fs::File;
 use std::io::Write;
 use std::path::PathBuf;
 
 const CSS_PATH: &str = "resources/styles.css";
+
+fn minimize(string: String) -> String {
+    let re = Regex::new(r"\s+").unwrap();
+
+    re.replace_all(string.as_str(), " ")
+        .to_string()
+        .replace("\n", "")
+}
 
 #[derive(Debug, Default)]
 pub struct Page {
@@ -38,7 +47,7 @@ impl Page {
         html.push_str("<head><style>");
 
         if let Ok(css) = fs::read_to_string(CSS_PATH) {
-            html.push_str(css.as_str());
+            html.push_str(minimize(css).as_str());
         }
         html.push_str("</style>");
         if let Some(title) = &self.title {
