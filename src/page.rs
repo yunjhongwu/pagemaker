@@ -7,7 +7,7 @@ use std::path::PathBuf;
 
 const CSS_PATH: &str = "resources/styles.css";
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Page {
     title: Option<String>,
     content: String,

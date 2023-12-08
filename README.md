@@ -1,7 +1,7 @@
 # pagemaker
 A simple library to rend tables in HTML.
 
-[Demo](examples/deni.html)
+[Demo](examples/demo.html)
 
 
 ```rust
@@ -19,8 +19,8 @@ let table = table
             .add_field(Field::new("A"))
             .add_field(
                 Field::new("20")
-                    .set_background_color(colors::YELLOW)
-                    .set_text_color(colors::CYAN),
+                    .set_background_color(color::YELLOW)
+                    .set_text_color(color::CYAN),
             )
             .add_field(Field::new("1.80")),
     )
@@ -28,9 +28,9 @@ let table = table
     .add_row(
         Row::new()
             .add_field(Field::new("B"))
-            .add_field(Field::new("19").set_background_color(colors::RED))
+            .add_field(Field::new("19").set_background_color(color::RED))
             .add_field(Field::new("1.70"))
-            .set_background_color(colors::BLUE),
+            .set_background_color(color::BLUE),
     );
 let page = page.append(table);
 
@@ -52,7 +52,7 @@ let table2 = Table::new(
         .add_field(Field::new("2"))
         .add_field(Field::new("2021-01-01 00:00:01"))
         .add_field(Field::new("2.0"))
-        .set_text_color(colors::GREEN),
+        .set_text_color(color::GREEN),
 );
 
 page.append(table2)

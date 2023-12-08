@@ -1,15 +1,10 @@
-use crate::utils::validate_color;
+use crate::color_utils::validate_color;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Config {
     text_color: Option<String>,
     background_color: Option<String>,
-}
-
-impl Default for Config {
-    fn default() -> Self {
-        Self::new()
-    }
+    font_size: Option<String>,
 }
 
 impl Config {
@@ -17,6 +12,7 @@ impl Config {
         Self {
             text_color: None,
             background_color: None,
+            font_size: None,
         }
     }
 
@@ -32,6 +28,12 @@ impl Config {
         if let Some(color) = validate_color(color_string.into().as_str()) {
             self.background_color = Some(color.to_string());
         }
+
+        self
+    }
+
+    pub fn set_font_size(&mut self, size: u32) -> &Self {
+        self.font_size = Some(size.to_string());
 
         self
     }

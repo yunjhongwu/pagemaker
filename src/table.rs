@@ -1,8 +1,9 @@
 use crate::config::Config;
 use crate::object::Object;
 use crate::Row;
+use std::ops::{Index, IndexMut};
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Table {
     title: Option<String>,
     rows: Vec<Row>,
@@ -31,6 +32,20 @@ impl Table {
         self.rows.push(row);
 
         self
+    }
+}
+
+impl Index<usize> for Table {
+    type Output = Row;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.rows[index]
+    }
+}
+
+impl IndexMut<usize> for Table {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.rows[index]
     }
 }
 

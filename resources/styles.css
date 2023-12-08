@@ -15,17 +15,15 @@ body {
 .field {
     display: table-cell;
     padding: 10px;
+    text-align: right;
 }
 
 .row:first-child  {
     background: #eeeeee;
     border-top: 1px solid #000000;
+    text-align: left;
 }
 
 .row:last-child  {
     border-bottom: 1px solid #000000;
-}
-
-.span {
-    background-color:rgba(0,1,0,0.0);
 }
