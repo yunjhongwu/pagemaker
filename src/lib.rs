@@ -7,6 +7,7 @@ mod page;
 mod row;
 mod table;
 mod text;
+mod utils;
 
 pub use color_utils::{color, ColorInterpolator, ColorKnot};
 pub use columns::Columns;

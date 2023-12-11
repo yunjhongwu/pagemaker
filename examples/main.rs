@@ -1,7 +1,7 @@
 use pagemaker::{color, Columns, Field, Object, Page, Row, Table, Text};
 
 fn main() {
-    let page = Page::new().set_title("Demo");
+    let page = Page::default().set_title("Demo");
 
     let text = Text::new("Hello World!")
         .set_text_color(color::RED)

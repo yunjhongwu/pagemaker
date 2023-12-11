@@ -4,7 +4,7 @@ A simple library to rend tables in HTML.
 [Demo](https://htmlpreview.github.io/?https://github.com/yunjhongwu/pagemaker/blob/main/examples/demo.html)
 
 ```rust
-let page = Page::new().set_title("Demo");
+let page = Page::default().set_title("Demo");
 
 let text = Text::new("Hello World!")
     .set_text_color(color::RED)
