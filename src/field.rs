@@ -19,8 +19,7 @@ impl Field {
 impl Object for Field {
     fn to_html(&self) -> String {
         let config = self.get_config();
-        // create html with config
-        let mut html = format!("<div class=\"field\" style=\"{}\">", config.get_style());
+        let mut html = format!("<div class=\"field\" {}>", config.get_style());
         html.push_str(self.content.as_str());
         html.push_str("</div>");
 

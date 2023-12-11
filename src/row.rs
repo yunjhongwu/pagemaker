@@ -40,7 +40,7 @@ impl Row {
         &self.fields
     }
 
-    pub fn length(&self) -> usize {
+    pub fn len(&self) -> usize {
         self.fields.len()
     }
 }
@@ -61,7 +61,7 @@ impl IndexMut<usize> for Row {
 
 impl Object for Row {
     fn to_html(&self) -> String {
-        let mut html = format!("<div class=\"row\" style=\"{}\">", self.config.get_style());
+        let mut html = format!("<div class=\"row\" {}>", self.config.get_style());
         for field in self.fields.iter() {
             html.push_str(field.to_html().as_str());
         }

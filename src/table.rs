@@ -26,12 +26,16 @@ impl Table {
     }
 
     pub fn add_row(mut self, row: Row) -> Self {
-        if row.length() != self.rows[0].length() {
+        if row.len() != self.rows[0].len() {
             panic!("Row length does not match header length.");
         }
         self.rows.push(row);
 
         self
+    }
+
+    pub fn len(&self) -> usize {
+        self.rows.len()
     }
 }
 
