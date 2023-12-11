@@ -5,6 +5,7 @@ body {
 .table {
     display: table;
     border-collapse: collapse;
+    width: 90%;
 }
 
 .row {
@@ -26,4 +27,15 @@ body {
 
 .row:last-child  {
     border-bottom: 1px solid #000000;
+}
+
+.column {
+    float: left;
+}
+
+.columns {
+    content: "";
+    display: table;
+    clear: both;
+    width: 100%;
 }

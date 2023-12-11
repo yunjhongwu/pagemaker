@@ -17,11 +17,7 @@ impl Text {
 
 impl Object for Text {
     fn to_html(&self) -> String {
-        format!(
-            "<span style=\"{}\">{}</span>",
-            self.config.get_style(),
-            self.text
-        )
+        format!("<span {}>{}</span>", self.config.get_style(), self.text)
     }
 
     fn get_config(&self) -> &Config {

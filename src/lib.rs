@@ -1,4 +1,5 @@
 mod color_utils;
+mod columns;
 mod config;
 mod field;
 mod object;
@@ -8,6 +9,7 @@ mod table;
 mod text;
 
 pub use color_utils::{color, ColorInterpolator, ColorKnot};
+pub use columns::Columns;
 pub use field::Field;
 pub use object::Object;
 pub use page::Page;

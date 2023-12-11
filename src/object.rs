@@ -15,6 +15,12 @@ pub trait Object: Sized {
         self
     }
 
+    fn set_font_size(mut self, size: u32) -> Self {
+        self.get_mut_config().set_font_size(size);
+
+        self
+    }
+
     fn get_config(&self) -> &Config;
 
     fn get_mut_config(&mut self) -> &mut Config;

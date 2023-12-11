@@ -39,14 +39,24 @@ impl Config {
     }
 
     pub fn get_style(&self) -> String {
-        let mut style = String::from("");
+        let mut styles = String::from("");
+
         if let Some(color) = &self.text_color {
-            style.push_str(format!("color: {}; ", color).as_str());
-        }
-        if let Some(color) = &self.background_color {
-            style.push_str(format!("background-color: {}; ", color).as_str());
+            styles.push_str(format!("color:{};", color).as_str());
         }
 
-        style
+        if let Some(style) = &self.background_color {
+            styles.push_str(format!("background-color:{};", style).as_str());
+        }
+
+        if let Some(size) = &self.font_size {
+            styles.push_str(format!("font-size:{}px;", size).as_str());
+        }
+
+        if styles.is_empty() {
+            String::from("")
+        } else {
+            format!("style=\"{}\"", styles)
+        }
     }
 }

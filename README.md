@@ -1,7 +1,7 @@
 # pagemaker
 A simple library to rend tables in HTML.
 
-[Demo](examples/demo.html)
+[Demo](https://htmlpreview.github.io/?https://github.com/yunjhongwu/pagemaker/blob/main/examples/demo.html)
 
 
 ```rust
