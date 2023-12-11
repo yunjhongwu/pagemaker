@@ -1,33 +1,31 @@
+use crate::utils::{minimize, DEFAULT_CSS_PATH};
 use crate::Object;
 use anyhow::Result;
-use regex::Regex;
 use std::fs;
 use std::fs::File;
 use std::io::Write;
 use std::path::PathBuf;
 
-const CSS_PATH: &str = "resources/styles.css";
-
-fn minimize(string: String) -> String {
-    let re = Regex::new(r"\s+").unwrap();
-
-    re.replace_all(string.as_str(), " ")
-        .to_string()
-        .replace("\n", "")
-}
-
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct Page {
     title: Option<String>,
     content: String,
+    css: String,
 }
 
+impl Default for Page {
+    fn default() -> Self {
+        Self::new(PathBuf::from(DEFAULT_CSS_PATH)).unwrap()
+    }
+}
 impl Page {
-    pub fn new() -> Self {
-        Self {
+    pub fn new(css_path: PathBuf) -> Option<Self> {
+        let css = minimize(fs::read_to_string(css_path).ok()?);
+        Some(Self {
             title: None,
             content: String::new(),
-        }
+            css,
+        })
     }
 
     pub fn set_title(mut self, title: impl Into<String>) -> Self {
@@ -44,12 +42,8 @@ impl Page {
 
     pub fn to_html(&self) -> String {
         let mut html = String::from("<html>");
-        html.push_str("<head><style>");
+        html.push_str(format!("<head><style>{}</style>", self.css).as_str());
 
-        if let Ok(css) = fs::read_to_string(CSS_PATH) {
-            html.push_str(minimize(css).as_str());
-        }
-        html.push_str("</style>");
         if let Some(title) = &self.title {
             html.push_str(format!("<title>{}</title>", title).as_str());
         }
