@@ -1,21 +1,21 @@
-use crate::config::Config;
+use crate::component::Config;
 
 pub trait Object: Sized {
     fn to_html(&self) -> String;
 
-    fn set_text_color(mut self, color_string: impl Into<String>) -> Self {
+    fn set_text_color(&mut self, color_string: impl Into<String>) -> &mut Self {
         self.get_mut_config().set_text_color(color_string);
 
         self
     }
 
-    fn set_background_color(mut self, color_string: impl Into<String>) -> Self {
+    fn set_background_color(&mut self, color_string: impl Into<String>) -> &mut Self {
         self.get_mut_config().set_background_color(color_string);
 
         self
     }
 
-    fn set_font_size(mut self, size: u32) -> Self {
+    fn set_font_size(&mut self, size: u32) -> &mut Self {
         self.get_mut_config().set_font_size(size);
 
         self

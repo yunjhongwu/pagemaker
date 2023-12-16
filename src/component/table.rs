@@ -1,9 +1,10 @@
-use crate::config::Config;
-use crate::object::Object;
-use crate::Row;
+use crate::component::style::Style;
+use crate::component::{Config, Object, Row};
+use crate::utils::string_to_value;
+use crate::ColorMap;
 use std::ops::{Index, IndexMut};
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct Table {
     title: Option<String>,
     rows: Vec<Row>,
@@ -34,8 +35,38 @@ impl Table {
         self
     }
 
+    pub fn apply_to_column(&mut self, col_idx: usize, colormap: &ColorMap, style: Style) {
+        for row in self.rows.iter_mut() {
+            if let Some(value) = string_to_value(row[col_idx].get_content()) {
+                let color = colormap.get_color(value);
+                match style {
+                    Style::Text => row[col_idx].set_text_color(color),
+                    Style::Background => row[col_idx].set_background_color(color),
+                };
+            }
+        }
+    }
+
+    pub fn apply_to_row(&mut self, row_idx: usize, colormap: &ColorMap, style: Style) {
+        let row = &mut self.rows[row_idx];
+        for i in 0..row.len() {
+            let field = &mut row[i];
+            if let Some(value) = string_to_value(field.get_content()) {
+                let color = colormap.get_color(value);
+                match style {
+                    Style::Text => field.set_text_color(color),
+                    Style::Background => field.set_background_color(color),
+                };
+            };
+        }
+    }
+
     pub fn len(&self) -> usize {
         self.rows.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.rows.is_empty()
     }
 }
 

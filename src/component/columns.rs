@@ -1,6 +1,7 @@
-use crate::config::Config;
+use crate::component::Config;
 use crate::Object;
 
+#[derive(Debug, Default, Clone)]
 pub struct Columns {
     columns: Vec<String>,
     config: Config,
@@ -22,6 +23,10 @@ impl Columns {
 
     pub fn len(&self) -> usize {
         self.columns.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.columns.is_empty()
     }
 }
 

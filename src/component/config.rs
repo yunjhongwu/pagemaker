@@ -1,6 +1,6 @@
 use crate::color_utils::validate_color;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct Config {
     text_color: Option<String>,
     background_color: Option<String>,
