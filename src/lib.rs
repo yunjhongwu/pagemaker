@@ -1,19 +1,8 @@
 mod color_utils;
-mod columns;
-mod config;
-mod field;
-mod object;
+mod component;
 mod page;
-mod row;
-mod table;
-mod text;
 mod utils;
 
-pub use color_utils::{color, ColorInterpolator, ColorKnot};
-pub use columns::Columns;
-pub use field::Field;
-pub use object::Object;
+pub use color_utils::{color, ColorKnot, ColorMap};
+pub use component::{Columns, Config, Field, Object, Row, Style, Table, Text};
 pub use page::Page;
-pub use row::Row;
-pub use table::Table;
-pub use text::Text;

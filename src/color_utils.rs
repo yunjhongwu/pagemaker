@@ -25,11 +25,11 @@ pub mod color {
 
 #[allow(unused)]
 pub struct ColorKnot(f64, String);
-pub struct ColorInterpolator {
+pub struct ColorMap {
     knots: Vec<(f64, String)>,
 }
 
-impl ColorInterpolator {
+impl ColorMap {
     pub fn new(knots: Vec<(f64, String)>) -> Option<Self> {
         let mut knots = knots;
         if knots
@@ -91,7 +91,7 @@ pub(crate) fn validate_color(color: &str) -> Option<String> {
 
 #[cfg(test)]
 mod tests {
-    use crate::color_utils::{validate_color, ColorInterpolator};
+    use crate::color_utils::{validate_color, ColorMap};
 
     #[test]
     fn test_validate_color() {
@@ -108,7 +108,7 @@ mod tests {
             (0.5, "#55A868".to_string()),
             (1.0, "#C44E52".to_string()),
         ];
-        let interpolator = ColorInterpolator::new(knots).unwrap();
+        let interpolator = ColorMap::new(knots).unwrap();
         assert_eq!(interpolator.get_color(0.0), "#4c72b0");
         assert_eq!(interpolator.get_color(0.25), "#508d8c");
         assert_eq!(interpolator.get_color(0.5), "#55a868");

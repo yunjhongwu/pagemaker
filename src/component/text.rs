@@ -1,6 +1,7 @@
-use crate::config::Config;
+use crate::component::Config;
 use crate::Object;
 
+#[derive(Debug, Clone)]
 pub struct Text {
     text: String,
     config: Config,

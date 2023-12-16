@@ -1,9 +1,7 @@
-use crate::config::Config;
-use crate::object::Object;
-use crate::Field;
+use crate::component::{Config, Field, Object};
 use std::ops::{Index, IndexMut};
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct Row {
     fields: Vec<Field>,
     config: Config,
@@ -42,6 +40,10 @@ impl Row {
 
     pub fn len(&self) -> usize {
         self.fields.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.fields.is_empty()
     }
 }
 

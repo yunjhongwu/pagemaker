@@ -5,7 +5,8 @@ fn main() {
 
     let text = Text::new("Hello World!")
         .set_text_color(color::RED)
-        .set_font_size(36);
+        .set_font_size(36)
+        .clone();
     let page = page.append(text);
 
     let header = Row::new()
@@ -21,17 +22,21 @@ fn main() {
                 .add_field(
                     Field::new("20")
                         .set_background_color(color::YELLOW)
-                        .set_text_color(color::CYAN),
+                        .set_text_color(color::CYAN)
+                        .clone(),
                 )
-                .add_field(Field::new("1.80")),
+                .add_field(Field::new("1.80"))
+                .clone(),
         )
-        .set_text_color("#00ff00")
+        .set_text_color(color::GREEN)
+        .clone()
         .add_row(
             Row::new()
                 .add_field(Field::new("B"))
-                .add_field(Field::new("19").set_background_color(color::RED))
+                .add_field(Field::new("19").set_background_color(color::RED).clone())
                 .add_field(Field::new("-1.70"))
-                .set_background_color(color::BLUE),
+                .set_background_color(color::BLUE)
+                .clone(),
         );
 
     let table2 = Table::new(
@@ -52,7 +57,8 @@ fn main() {
             .add_field(Field::new("2"))
             .add_field(Field::new("2021-01-01 00:00:01"))
             .add_field(Field::new("2.0"))
-            .set_text_color(color::GREEN),
+            .set_text_color(color::GREEN)
+            .clone(),
     );
 
     let columns = Columns::new().add_column(table1).add_column(table2);

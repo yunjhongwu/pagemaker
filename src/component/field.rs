@@ -1,7 +1,6 @@
-use crate::config::Config;
-use crate::object::Object;
+use crate::component::{Config, Object};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Field {
     content: String,
     config: Config,
@@ -13,6 +12,10 @@ impl Field {
             content: content.into(),
             config: Config::default(),
         }
+    }
+
+    pub fn get_content(&self) -> &str {
+        self.content.as_str()
     }
 }
 
