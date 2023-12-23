@@ -2,7 +2,11 @@ use crate::component::Config;
 
 pub trait Object: Sized {
     fn to_html(&self) -> String;
+}
 
+pub trait ChartObject: Object {}
+
+pub trait TextObject: Object {
     fn set_text_color(&mut self, color_string: impl Into<String>) -> &mut Self {
         self.get_mut_config().set_text_color(color_string);
 

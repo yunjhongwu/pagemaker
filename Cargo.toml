@@ -7,3 +7,4 @@ publish = false
 [dependencies]
 anyhow = "1.0.75"
 regex = "1.10.2"
+rand = { version = "0.8.4", features = [] }

@@ -1,5 +1,6 @@
+use crate::component::object::Object;
 use crate::component::Config;
-use crate::Object;
+use crate::TextObject;
 
 #[derive(Debug, Default, Clone)]
 pub struct Columns {
@@ -15,7 +16,7 @@ impl Columns {
         }
     }
 
-    pub fn add_column(mut self, field: impl Object) -> Self {
+    pub fn add_column(mut self, field: impl TextObject) -> Self {
         self.columns.push(field.to_html());
 
         self
@@ -44,7 +45,9 @@ impl Object for Columns {
 
         html
     }
+}
 
+impl TextObject for Columns {
     fn get_config(&self) -> &Config {
         &self.config
     }

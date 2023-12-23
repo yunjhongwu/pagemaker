@@ -1,4 +1,5 @@
-use crate::component::{Config, Field, Object};
+use crate::component::object::Object;
+use crate::component::{Config, Field, TextObject};
 use std::ops::{Index, IndexMut};
 
 #[derive(Debug, Default, Clone)]
@@ -71,7 +72,9 @@ impl Object for Row {
 
         html
     }
+}
 
+impl TextObject for Row {
     fn get_config(&self) -> &Config {
         &self.config
     }
