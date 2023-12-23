@@ -1,4 +1,5 @@
-use pagemaker::{color, Columns, Field, Object, Page, Row, Table, Text};
+use pagemaker::chart::{Data, Pair, ScatterPlot};
+use pagemaker::{color, Columns, Field, Page, Row, Table, Text, TextObject};
 
 fn main() {
     let page = Page::default().set_title("Demo");
@@ -7,7 +8,7 @@ fn main() {
         .set_text_color(color::RED)
         .set_font_size(36)
         .clone();
-    let page = page.append(text);
+    let page = page.append_text(text);
 
     let header = Row::new()
         .add_field(Field::new("Name"))
@@ -63,7 +64,39 @@ fn main() {
 
     let columns = Columns::new().add_column(table1).add_column(table2);
 
-    page.append(columns)
+    let data1 = Data::from_vec(vec![
+        Pair::new(0.1, 0.2),
+        Pair::new(0.2, 0.3),
+        Pair::new(0.3, 0.4),
+        Pair::new(0.4, 0.5),
+        Pair::new(0.5, 0.6),
+        Pair::new(0.6, 0.7),
+        Pair::new(0.7, 0.8),
+        Pair::new(0.8, 0.9),
+        Pair::new(0.9, 1.0),
+    ])
+    .set_label("data2");
+    let data2 = Data::from_vec(vec![
+        Pair::new(0.1, 0.1),
+        Pair::new(0.2, 0.2),
+        Pair::new(0.3, 0.3),
+        Pair::new(0.4, 0.4),
+        Pair::new(0.5, 0.5),
+        Pair::new(0.6, 0.6),
+        Pair::new(0.7, 0.7),
+        Pair::new(0.8, 0.8),
+        Pair::new(0.9, 0.9),
+    ])
+    .set_label("data2");
+
+    let chart = ScatterPlot::default()
+        .set_title("Demo Chart")
+        .set_x_label("x")
+        .set_y_label("y")
+        .add_data(data1)
+        .add_data(data2);
+    page.append_text(columns)
+        .append_chart(chart)
         .save_to_html(std::path::PathBuf::from("examples/demo.html"))
         .unwrap();
 }

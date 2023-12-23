@@ -1,5 +1,6 @@
+use crate::component::ChartObject;
 use crate::utils::{minimize, DEFAULT_CSS_PATH};
-use crate::Object;
+use crate::{utils, TextObject};
 use anyhow::Result;
 use std::fs;
 use std::fs::File;
@@ -11,6 +12,7 @@ pub struct Page {
     title: Option<String>,
     content: String,
     css: String,
+    include_charts: bool,
 }
 
 impl Default for Page {
@@ -25,6 +27,7 @@ impl Page {
             title: None,
             content: String::new(),
             css,
+            include_charts: false,
         })
     }
 
@@ -34,7 +37,14 @@ impl Page {
         self
     }
 
-    pub fn append(mut self, content: impl Object) -> Self {
+    pub fn append_text(mut self, content: impl TextObject) -> Self {
+        self.content.push_str(content.to_html().as_str());
+
+        self
+    }
+
+    pub fn append_chart(mut self, content: impl ChartObject) -> Self {
+        self.include_charts = true;
         self.content.push_str(content.to_html().as_str());
 
         self
@@ -49,6 +59,11 @@ impl Page {
         }
         html.push_str("</head>");
         html.push_str("<body>");
+        if self.include_charts {
+            html.push_str(
+                format!("<script src=\"{}\"></script>", utils::DEFAULT_CHART_JS_CDN).as_str(),
+            );
+        }
         html.push_str("<div class=\"page\">");
         html.push_str(self.content.as_str());
         html.push_str("</div>");

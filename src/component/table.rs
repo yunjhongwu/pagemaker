@@ -1,5 +1,6 @@
+use crate::component::object::Object;
 use crate::component::style::Style;
-use crate::component::{Config, Object, Row};
+use crate::component::{Config, Row, TextObject};
 use crate::utils::string_to_value;
 use crate::ColorMap;
 use std::ops::{Index, IndexMut};
@@ -99,7 +100,9 @@ impl Object for Table {
 
         html
     }
+}
 
+impl TextObject for Table {
     fn get_config(&self) -> &Config {
         &self.config
     }

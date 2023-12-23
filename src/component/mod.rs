@@ -7,10 +7,12 @@ mod style;
 mod table;
 mod text;
 
+pub mod chart;
+
 pub use columns::Columns;
 pub use config::Config;
 pub use field::Field;
-pub use object::Object;
+pub use object::{ChartObject, Object, TextObject};
 pub use row::Row;
 pub use style::Style;
 pub use table::Table;

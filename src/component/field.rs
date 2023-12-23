@@ -1,4 +1,5 @@
-use crate::component::{Config, Object};
+use crate::component::object::Object;
+use crate::component::{Config, TextObject};
 
 #[derive(Debug, Clone)]
 pub struct Field {
@@ -28,7 +29,9 @@ impl Object for Field {
 
         html
     }
+}
 
+impl TextObject for Field {
     fn get_config(&self) -> &Config {
         &self.config
     }

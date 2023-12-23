@@ -1,5 +1,6 @@
+use crate::component::object::Object;
 use crate::component::Config;
-use crate::Object;
+use crate::TextObject;
 
 #[derive(Debug, Clone)]
 pub struct Text {
@@ -20,7 +21,9 @@ impl Object for Text {
     fn to_html(&self) -> String {
         format!("<span {}>{}</span>", self.config.get_style(), self.text)
     }
+}
 
+impl TextObject for Text {
     fn get_config(&self) -> &Config {
         &self.config
     }
