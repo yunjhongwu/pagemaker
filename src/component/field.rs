@@ -1,5 +1,6 @@
 use crate::component::object::Object;
 use crate::component::{Config, TextObject};
+use anyhow::Result;
 
 #[derive(Debug, Clone)]
 pub struct Field {
@@ -21,13 +22,13 @@ impl Field {
 }
 
 impl Object for Field {
-    fn to_html(&self) -> String {
+    fn to_html(&self) -> Result<String> {
         let config = self.get_config();
         let mut html = format!("<div class=\"field\" {}>", config.get_style());
         html.push_str(self.content.as_str());
         html.push_str("</div>");
 
-        html
+        Ok(html)
     }
 }
 

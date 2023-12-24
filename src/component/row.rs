@@ -1,5 +1,6 @@
 use crate::component::object::Object;
 use crate::component::{Config, Field, TextObject};
+use anyhow::Result;
 use std::ops::{Index, IndexMut};
 
 #[derive(Debug, Default, Clone)]
@@ -63,14 +64,14 @@ impl IndexMut<usize> for Row {
 }
 
 impl Object for Row {
-    fn to_html(&self) -> String {
+    fn to_html(&self) -> Result<String> {
         let mut html = format!("<div class=\"row\" {}>", self.config.get_style());
         for field in self.fields.iter() {
-            html.push_str(field.to_html().as_str());
+            html.push_str(field.to_html()?.as_str());
         }
         html.push_str("</div>");
 
-        html
+        Ok(html)
     }
 }
 

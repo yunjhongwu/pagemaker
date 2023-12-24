@@ -1,3 +1,5 @@
+use anyhow::Result;
+
 #[derive(Debug, Clone, PartialEq, PartialOrd, Default)]
 pub struct Pair {
     x: f64,
@@ -8,15 +10,19 @@ impl Pair {
     pub fn new(x: f64, y: f64) -> Self {
         Self { x, y }
     }
+
+    pub fn to_html(&self) -> String {
+        format!("{{x:{},y:{}}}", self.x, self.y)
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Default)]
-pub struct Data {
+pub struct Dataset {
     label: Option<String>,
     data: Vec<Pair>,
 }
 
-impl Data {
+impl Dataset {
     pub fn new() -> Self {
         Self {
             label: None,
@@ -60,7 +66,7 @@ impl Data {
         self.data.is_empty()
     }
 
-    pub fn to_html(&self) -> String {
+    pub fn to_html(&self) -> Result<String> {
         let mut html = String::from("{");
         if let Some(label) = &self.label {
             html.push_str(format!("label:\"{}\",", label).as_str());
@@ -70,12 +76,12 @@ impl Data {
             &self
                 .data
                 .iter()
-                .map(|pair| format!("{{x:{},y:{}}}", pair.x, pair.y))
+                .map(Pair::to_html)
                 .collect::<Vec<_>>()
                 .join(","),
         );
         html.push_str("]}");
 
-        html
+        Ok(html)
     }
 }

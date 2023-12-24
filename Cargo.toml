@@ -5,6 +5,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
-anyhow = "1.0.75"
-regex = "1.10.2"
-rand = { version = "0.8.4", features = [] }
+anyhow = "1"
+regex = "1"
+rand = { version = "0.8", features = [] }
+minify-html = "0.11"

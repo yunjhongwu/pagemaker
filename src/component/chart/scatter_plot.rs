@@ -1,6 +1,7 @@
-use crate::component::chart::data::Data;
+use crate::chart::data::Dataset;
 use crate::component::{ChartObject, Object};
 use crate::utils::get_tag;
+use anyhow::Result;
 
 #[derive(Debug)]
 pub struct ScatterPlot {
@@ -8,7 +9,7 @@ pub struct ScatterPlot {
     title: Option<String>,
     x_label: Option<String>,
     y_label: Option<String>,
-    datasets: Vec<Data>,
+    datasets: Vec<Dataset>,
 }
 
 impl Default for ScatterPlot {
@@ -42,50 +43,37 @@ impl ScatterPlot {
         self
     }
 
-    pub fn add_data(mut self, data: Data) -> Self {
+    pub fn add_data(mut self, data: Dataset) -> Self {
         self.datasets.push(data);
 
         self
     }
 
-    fn datasets_to_html(&self) -> String {
-        self.datasets
-            .iter()
-            .map(|data| data.to_html())
-            .collect::<Vec<_>>()
-            .join(",")
+    fn datasets_to_html(&self) -> Result<String> {
+        let mut datasets_html = Vec::<String>::new();
+        for dataset in &self.datasets {
+            datasets_html.push(dataset.to_html()?);
+        }
+
+        Ok(datasets_html.join(","))
     }
 }
 
 impl Object for ScatterPlot {
-    fn to_html(&self) -> String {
+    fn to_html(&self) -> Result<String> {
         let mut html = format!("<div><canvas id=\"{}\"></canvas></div>", self.id);
         html.push_str("<script>");
-        html.push_str(format!("const ctx = document.getElementById('{}');", self.id).as_str());
+        let context = format!("document.getElementById('{}')", self.id);
 
-        html.push_str(
-            format!(
-                "const config = {{
-          type: 'scatter',
-          data: {{datasets:[{}]}},
-          options: {{
-            scales: {{
-              x: {{
-                type: 'linear',
-                position: 'bottom'
-              }}
-            }}
-          }}
-        }};",
-                &self.datasets_to_html()
-            )
-            .as_str(),
-        );
+        let mut config = String::from("{");
+        config.push_str("type:'scatter',");
+        config.push_str(format!("data:{{datasets:[{}]}},", self.datasets_to_html()?).as_str());
+        config.push_str("options:{scales:{x:{type:'linear',position:'bottom'}}}}");
 
-        html.push_str("const scatter_plot = new Chart(ctx, config);");
+        html.push_str(format!("const scatter_plot = new Chart({}, {});", context, config).as_str());
         html.push_str("</script>");
 
-        html
+        Ok(html)
     }
 }
 

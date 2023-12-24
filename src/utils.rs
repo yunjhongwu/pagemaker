@@ -1,15 +1,17 @@
+use minify_html::minify;
 use rand::distributions::{Alphanumeric, DistString};
 use regex::Regex;
 
 pub(crate) const DEFAULT_CSS_PATH: &str = "resources/styles.css";
 pub(crate) const DEFAULT_CHART_JS_CDN: &str = "https://cdn.jsdelivr.net/npm/chart.js";
 
-pub(crate) fn minimize(string: String) -> String {
-    let re = Regex::new(r"\s+").unwrap();
-
-    re.replace_all(string.as_str(), " ")
-        .to_string()
-        .replace('\n', "")
+pub(crate) fn minimize(string: String) -> Vec<u8> {
+    let cfg = minify_html::Cfg {
+        minify_css: true,
+        minify_js: true,
+        ..Default::default()
+    };
+    minify(string.as_bytes(), &cfg)
 }
 
 pub(crate) fn string_to_value(text: &str) -> Option<f64> {

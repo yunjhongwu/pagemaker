@@ -1,6 +1,7 @@
 use crate::component::object::Object;
 use crate::component::Config;
 use crate::TextObject;
+use anyhow::Result;
 
 #[derive(Debug, Default, Clone)]
 pub struct Columns {
@@ -16,10 +17,10 @@ impl Columns {
         }
     }
 
-    pub fn add_column(mut self, field: impl TextObject) -> Self {
-        self.columns.push(field.to_html());
+    pub fn add_column(mut self, field: impl TextObject) -> Result<Self> {
+        self.columns.push(field.to_html()?);
 
-        self
+        Ok(self)
     }
 
     pub fn len(&self) -> usize {
@@ -32,7 +33,7 @@ impl Columns {
 }
 
 impl Object for Columns {
-    fn to_html(&self) -> String {
+    fn to_html(&self) -> Result<String> {
         let mut html = format!("<div class=\"columns\" {}>", self.get_config().get_style());
         let width = format!("width:{}%;", 100.0 / self.columns.len() as f32);
 
@@ -43,7 +44,7 @@ impl Object for Columns {
         }
         html.push_str("</div>");
 
-        html
+        Ok(html)
     }
 }
 
