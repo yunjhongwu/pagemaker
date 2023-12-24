@@ -1,5 +1,5 @@
 mod data;
-mod scatter_plot;
+mod xy_plot;
 
 pub use data::{Dataset, Pair};
-pub use scatter_plot::ScatterPlot;
+pub use xy_plot::{plot_type, XYPlot};

@@ -1,13 +1,14 @@
 use anyhow::Result;
+use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Default)]
-pub struct Pair {
-    x: f64,
+pub struct Pair<XType: Display> {
+    x: XType,
     y: f64,
 }
 
-impl Pair {
-    pub fn new(x: f64, y: f64) -> Self {
+impl<XType: Display> Pair<XType> {
+    pub fn new(x: XType, y: f64) -> Self {
         Self { x, y }
     }
 
@@ -17,12 +18,12 @@ impl Pair {
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Default)]
-pub struct Dataset {
+pub struct Dataset<XType: Display> {
     label: Option<String>,
-    data: Vec<Pair>,
+    data: Vec<Pair<XType>>,
 }
 
-impl Dataset {
+impl<XType: Display> Dataset<XType> {
     pub fn new() -> Self {
         Self {
             label: None,
@@ -30,11 +31,11 @@ impl Dataset {
         }
     }
 
-    pub fn from_vec(data: Vec<Pair>) -> Self {
+    pub fn from_vec(data: Vec<Pair<XType>>) -> Self {
         Self { label: None, data }
     }
 
-    pub fn from_zip(x: Vec<f64>, y: Vec<f64>) -> Option<Self> {
+    pub fn from_zip(x: Vec<XType>, y: Vec<f64>) -> Option<Self> {
         if x.len() != y.len() {
             return None;
         }
@@ -54,7 +55,7 @@ impl Dataset {
         self.label.as_ref()
     }
 
-    pub fn push(&mut self, x: f64, y: f64) {
+    pub fn push(&mut self, x: XType, y: f64) {
         self.data.push(Pair::new(x, y));
     }
 
