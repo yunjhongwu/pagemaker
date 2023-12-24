@@ -3,6 +3,7 @@ use crate::component::style::Style;
 use crate::component::{Config, Row, TextObject};
 use crate::utils::string_to_value;
 use crate::ColorMap;
+use anyhow::Result;
 use std::ops::{Index, IndexMut};
 
 #[derive(Debug, Default, Clone)]
@@ -86,7 +87,7 @@ impl IndexMut<usize> for Table {
 }
 
 impl Object for Table {
-    fn to_html(&self) -> String {
+    fn to_html(&self) -> Result<String> {
         let mut html = String::new();
         if let Some(title) = &self.title {
             html.push_str(format!("<h3>{}</h3>", title).as_str());
@@ -94,11 +95,11 @@ impl Object for Table {
 
         html.push_str("<div class=\"table\">");
         for row in self.rows.iter() {
-            html.push_str(row.to_html().as_str());
+            html.push_str(row.to_html()?.as_str());
         }
         html.push_str("</div>");
 
-        html
+        Ok(html)
     }
 }
 

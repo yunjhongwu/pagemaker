@@ -1,7 +1,8 @@
 use crate::component::Config;
+use anyhow::Result;
 
 pub trait Object: Sized {
-    fn to_html(&self) -> String;
+    fn to_html(&self) -> Result<String>;
 }
 
 pub trait ChartObject: Object {}

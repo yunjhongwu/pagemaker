@@ -22,7 +22,7 @@ impl Default for Page {
 }
 impl Page {
     pub fn new(css_path: PathBuf) -> Option<Self> {
-        let css = minimize(fs::read_to_string(css_path).ok()?);
+        let css = fs::read_to_string(css_path).ok()?;
         Some(Self {
             title: None,
             content: String::new(),
@@ -37,20 +37,20 @@ impl Page {
         self
     }
 
-    pub fn append_text(mut self, content: impl TextObject) -> Self {
-        self.content.push_str(content.to_html().as_str());
+    pub fn append_text(mut self, content: impl TextObject) -> Result<Self> {
+        self.content.push_str(content.to_html()?.as_str());
 
-        self
+        Ok(self)
     }
 
-    pub fn append_chart(mut self, content: impl ChartObject) -> Self {
+    pub fn append_chart(mut self, content: impl ChartObject) -> Result<Self> {
         self.include_charts = true;
-        self.content.push_str(content.to_html().as_str());
+        self.content.push_str(content.to_html()?.as_str());
 
-        self
+        Ok(self)
     }
 
-    pub fn to_html(&self) -> String {
+    pub fn save_to_html(&self, filepath: PathBuf) -> Result<()> {
         let mut html = String::from("<html>");
         html.push_str(format!("<head><style>{}</style>", self.css).as_str());
 
@@ -70,12 +70,9 @@ impl Page {
         html.push_str("</body>");
         html.push_str("</html>");
 
-        html
-    }
-
-    pub fn save_to_html(&self, filepath: PathBuf) -> Result<()> {
         let mut output = File::create(filepath)?;
+        output.write_all(minimize(html).as_slice())?;
 
-        Ok(write!(output, "{}", self.to_html())?)
+        Ok(())
     }
 }
