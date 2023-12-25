@@ -1,9 +1,8 @@
 use crate::component::object::Object;
 use crate::component::style::Style;
 use crate::component::{Config, Row, TextObject};
-use crate::utils::string_to_value;
-use crate::ColorMap;
 use anyhow::Result;
+use serde_json::Value;
 use std::ops::{Index, IndexMut};
 
 #[derive(Debug, Default, Clone)]
@@ -37,30 +36,32 @@ impl Table {
         self
     }
 
-    pub fn apply_to_column(&mut self, col_idx: usize, colormap: &ColorMap, style: Style) {
+    pub fn apply_to_column<F: Fn(&String) -> Option<Value>>(
+        mut self,
+        col_idx: usize,
+        style: Style,
+        style_map: &F,
+    ) -> Self {
         for row in self.rows.iter_mut() {
-            if let Some(value) = string_to_value(row[col_idx].get_content()) {
-                let color = colormap.get_color(value);
-                match style {
-                    Style::Text => row[col_idx].set_text_color(color),
-                    Style::Background => row[col_idx].set_background_color(color),
-                };
-            }
+            row[col_idx].apply_style_map(style, style_map);
         }
+
+        self
     }
 
-    pub fn apply_to_row(&mut self, row_idx: usize, colormap: &ColorMap, style: Style) {
+    pub fn apply_to_row<F: Fn(&String) -> Option<Value>>(
+        mut self,
+        row_idx: usize,
+        style: Style,
+        style_map: &F,
+    ) -> Self {
         let row = &mut self.rows[row_idx];
         for i in 0..row.len() {
             let field = &mut row[i];
-            if let Some(value) = string_to_value(field.get_content()) {
-                let color = colormap.get_color(value);
-                match style {
-                    Style::Text => field.set_text_color(color),
-                    Style::Background => field.set_background_color(color),
-                };
-            };
+            field.apply_style_map(style, style_map);
         }
+
+        self
     }
 
     pub fn len(&self) -> usize {

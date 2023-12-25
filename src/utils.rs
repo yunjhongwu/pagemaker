@@ -1,6 +1,5 @@
 use minify_html::minify;
 use rand::distributions::{Alphanumeric, DistString};
-use regex::Regex;
 
 pub(crate) const DEFAULT_CSS_PATH: &str = "resources/styles.css";
 pub(crate) const DEFAULT_CHART_JS_CDN: [&str; 3] = [
@@ -19,13 +18,11 @@ pub(crate) fn minimize(string: String) -> Vec<u8> {
 }
 
 pub(crate) fn string_to_value(text: &str) -> Option<f64> {
-    let re = Regex::new(r"^\s*(\d+(\.\d+)?)\s*(%?)\s*$").ok()?;
-    let captures = re.captures(text).unwrap();
-    let value = captures.get(1).unwrap().as_str().parse::<f64>().ok()?;
-    let unit = captures.get(3).unwrap().as_str();
-    let output = if unit == "%" { value / 100.0 } else { value };
-
-    Some(output)
+    if let Some(number_part) = text.strip_suffix('%') {
+        Some(number_part.parse::<f64>().ok()? / 100.0)
+    } else {
+        text.parse::<f64>().ok()
+    }
 }
 
 pub(crate) fn get_tag(prefix: &str) -> String {
