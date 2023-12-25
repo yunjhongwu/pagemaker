@@ -3,7 +3,11 @@ use rand::distributions::{Alphanumeric, DistString};
 use regex::Regex;
 
 pub(crate) const DEFAULT_CSS_PATH: &str = "resources/styles.css";
-pub(crate) const DEFAULT_CHART_JS_CDN: &str = "https://cdn.jsdelivr.net/npm/chart.js";
+pub(crate) const DEFAULT_CHART_JS_CDN: [&str; 3] = [
+    "https://cdn.jsdelivr.net/npm/chart.js",
+    "https://cdn.jsdelivr.net/npm/moment@^2",
+    "https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1",
+];
 
 pub(crate) fn minimize(string: String) -> Vec<u8> {
     let cfg = minify_html::Cfg {

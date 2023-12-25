@@ -61,7 +61,12 @@ impl Page {
         html.push_str("<body>");
         if self.include_charts {
             html.push_str(
-                format!("<script src=\"{}\"></script>", utils::DEFAULT_CHART_JS_CDN).as_str(),
+                utils::DEFAULT_CHART_JS_CDN
+                    .iter()
+                    .map(|s| format!("<script src=\"{}\"></script>", s))
+                    .collect::<Vec<_>>()
+                    .join("\n")
+                    .as_str(),
             );
         }
         html.push_str("<div class=\"page\">");
