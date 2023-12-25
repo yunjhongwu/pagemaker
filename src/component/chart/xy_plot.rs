@@ -170,7 +170,7 @@ impl<T: PlotType, X: XType> Object for XYPlot<T, X> {
         config.insert("options".to_string(), options.into());
 
         let html = format!(
-            "<div><canvas id=\"{}\"></canvas></div><script>new Chart({}, {});</script>",
+            "<div><canvas id=\"{}\"></canvas></div><script>document.addEventListener('DOMContentLoaded', function () {{ new Chart({}, {}); }});</script>",
             self.id,
             context,
             json!(config)
