@@ -4,9 +4,9 @@ use regex::Regex;
 
 pub(crate) const DEFAULT_CSS_PATH: &str = "resources/styles.css";
 pub(crate) const DEFAULT_CHART_JS_CDN: [&str; 3] = [
-    "https://cdn.jsdelivr.net/npm/chart.js",
-    "https://cdn.jsdelivr.net/npm/moment@^2",
-    "https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1",
+    "https://cdn.jsdelivr.net/npm/chart.js@^4/dist/chart.umd.min.js",
+    "https://cdn.jsdelivr.net/npm/moment@^2/moment.min.js",
+    "https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1/dist/chartjs-adapter-moment.min.js",
 ];
 
 pub(crate) fn minimize(string: String) -> Vec<u8> {
