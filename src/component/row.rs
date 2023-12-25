@@ -65,13 +65,17 @@ impl IndexMut<usize> for Row {
 
 impl Object for Row {
     fn to_html(&self) -> Result<String> {
-        let mut html = format!("<div class=\"row\" {}>", self.config.get_style());
-        for field in self.fields.iter() {
-            html.push_str(field.to_html()?.as_str());
-        }
-        html.push_str("</div>");
-
-        Ok(html)
+        let fields = self
+            .fields
+            .iter()
+            .filter_map(|field| field.to_html().ok())
+            .collect::<Vec<_>>()
+            .join("");
+        Ok(format!(
+            "<div class=\"row\" {}>{}</div>",
+            self.config.get_style(),
+            fields
+        ))
     }
 }
 

@@ -34,15 +34,25 @@ impl Columns {
 
 impl Object for Columns {
     fn to_html(&self) -> Result<String> {
-        let mut html = format!("<div class=\"columns\" {}>", self.get_config().get_style());
-        let width = format!("width:{}%;", 100.0 / self.columns.len() as f32);
+        let width = 100.0 / self.columns.len() as f32;
 
-        for column in &self.columns {
-            html.push_str(format!("<div class=\"column\" style={}>", width).as_str());
-            html.push_str(column.as_str());
-            html.push_str("</div>");
-        }
-        html.push_str("</div>");
+        let columns = self
+            .columns
+            .iter()
+            .map(|column| {
+                format!(
+                    "<div class=\"column\" style=width:{}%>{}</div>",
+                    width, column
+                )
+            })
+            .collect::<Vec<_>>()
+            .join("");
+
+        let html = format!(
+            "<div class=\"columns\" {}>{}</div>",
+            self.get_config().get_style(),
+            columns
+        );
 
         Ok(html)
     }

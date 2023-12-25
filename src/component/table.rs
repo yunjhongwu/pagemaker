@@ -93,11 +93,17 @@ impl Object for Table {
             html.push_str(format!("<h3>{}</h3>", title).as_str());
         }
 
-        html.push_str("<div class=\"table\">");
-        for row in self.rows.iter() {
-            html.push_str(row.to_html()?.as_str());
-        }
-        html.push_str("</div>");
+        html.push_str(
+            format!(
+                "<div class=\"table\">{}</div>",
+                self.rows
+                    .iter()
+                    .filter_map(|row| row.to_html().ok())
+                    .collect::<Vec<_>>()
+                    .join("")
+            )
+            .as_str(),
+        );
 
         Ok(html)
     }

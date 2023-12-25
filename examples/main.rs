@@ -1,4 +1,5 @@
 use anyhow::Result;
+use pagemaker::chart::plot_type::Time;
 use pagemaker::chart::{plot_type, Dataset, Pair, XYPlot};
 use pagemaker::{color, Columns, Field, Page, Row, Table, Text, TextObject};
 
@@ -66,31 +67,26 @@ fn main() -> Result<()> {
     let columns = Columns::new().add_column(table1)?.add_column(table2)?;
 
     let data1 = Dataset::from_vec(vec![
-        Pair::new(0.1, 0.2),
-        Pair::new(0.2, 0.3),
-        Pair::new(0.3, 0.4),
-        Pair::new(0.4, 0.5),
-        Pair::new(0.5, 0.6),
-        Pair::new(0.6, 0.7),
-        Pair::new(0.7, 0.8),
-        Pair::new(0.8, 0.9),
-        Pair::new(0.9, 1.0),
+        Pair::new(1609322800000, 0.1),
+        Pair::new(1609372800000, 0.1),
+        Pair::new(1609459200000, 0.2),
+        Pair::new(1609545600000, 0.3),
+        Pair::new(1609632000000, 0.4),
+        Pair::new(1609718400000, 0.5),
+        Pair::new(1609804800000, 0.6),
+        Pair::new(1609891200000, 0.7),
     ])
-    .set_label("data2");
+    .set_label("data1");
     let data2 = Dataset::from_vec(vec![
-        Pair::new(0.15, 0.1),
-        Pair::new(0.25, 0.2),
-        Pair::new(0.35, 0.3),
-        Pair::new(0.45, 0.4),
-        Pair::new(0.55, 0.5),
-        Pair::new(0.65, 0.6),
-        Pair::new(0.75, 0.7),
-        Pair::new(0.85, 0.8),
-        Pair::new(0.95, 0.9),
+        Pair::new(1609509200000, 0.1),
+        Pair::new(1609595600000, 0.2),
+        Pair::new(1609682000000, 0.3),
+        Pair::new(1609768400000, 0.4),
+        Pair::new(1609854800000, 0.5),
     ])
     .set_label("data2");
 
-    let chart = XYPlot::<plot_type::Line>::default()
+    let chart = XYPlot::<plot_type::Line, Time<i64>>::default()
         .set_title("Demo Chart")
         .set_x_label("x")
         .set_y_label("y")

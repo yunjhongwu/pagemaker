@@ -1,4 +1,6 @@
 use anyhow::Result;
+use serde::Serialize;
+use serde_json::{json, Map, Value};
 use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Default)]
@@ -7,23 +9,23 @@ pub struct Pair<XType: Display> {
     y: f64,
 }
 
-impl<XType: Display> Pair<XType> {
+impl<XType: Display + Serialize> Pair<XType> {
     pub fn new(x: XType, y: f64) -> Self {
         Self { x, y }
     }
 
-    pub fn to_html(&self) -> String {
-        format!("{{x:{},y:{}}}", self.x, self.y)
+    pub fn to_json(&self) -> Value {
+        json!({ "x": self.x, "y": self.y })
     }
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Default)]
-pub struct Dataset<XType: Display> {
+pub struct Dataset<XType: Display + Serialize> {
     label: Option<String>,
     data: Vec<Pair<XType>>,
 }
 
-impl<XType: Display> Dataset<XType> {
+impl<XType: Display + Serialize> Dataset<XType> {
     pub fn new() -> Self {
         Self {
             label: None,
@@ -67,22 +69,15 @@ impl<XType: Display> Dataset<XType> {
         self.data.is_empty()
     }
 
-    pub fn to_html(&self) -> Result<String> {
-        let mut html = String::from("{");
+    pub fn to_json(&self) -> Result<Value> {
+        let mut config = Map::new();
         if let Some(label) = &self.label {
-            html.push_str(format!("label:\"{}\",", label).as_str());
+            config.insert("label".to_string(), label.as_str().into());
         }
-        html.push_str("data:[");
-        html.push_str(
-            &self
-                .data
-                .iter()
-                .map(Pair::to_html)
-                .collect::<Vec<_>>()
-                .join(","),
-        );
-        html.push_str("]}");
 
-        Ok(html)
+        let data = self.data.iter().map(Pair::to_json).collect::<Vec<_>>();
+        config.insert("data".to_string(), data.into());
+
+        Ok(config.into())
     }
 }
