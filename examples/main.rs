@@ -1,13 +1,13 @@
 use anyhow::Result;
 use pagemaker::chart::plot_type::Time;
 use pagemaker::chart::{plot_type, Dataset, Pair, XYPlot};
-use pagemaker::{color, ColorMap, Columns, Field, Page, Row, Style, Table, Text, TextObject};
+use pagemaker::{palette, ColorMap, Columns, Field, Page, Row, Style, Table, Text, TextObject};
 
 fn main() -> Result<()> {
     let page = Page::default().set_title("Demo");
 
     let text = Text::new("Hello World!")
-        .set_style(Style::Color, color::RED)
+        .set_style(Style::Color, palette::RED)
         .set_style(Style::FontSize, 36)
         .clone();
     let page = page.append_text(text).unwrap();
@@ -19,9 +19,9 @@ fn main() -> Result<()> {
     let table1 = Table::new(header).set_title("Demo Table");
 
     let colormap = ColorMap::new(vec![
-        (0.0, color::GREEN.to_string()),
-        (0.5, color::YELLOW.to_string()),
-        (1.0, color::RED.to_string()),
+        (0.0, palette::GREEN.to_string()),
+        (0.5, palette::YELLOW.to_string()),
+        (1.0, palette::RED.to_string()),
     ])
     .unwrap();
     let table1 = table1
@@ -30,21 +30,21 @@ fn main() -> Result<()> {
                 .add_field(Field::new("A"))
                 .add_field(
                     Field::new("20")
-                        .set_style(Style::BackgroundColor, color::YELLOW)
-                        .set_style(Style::Color, color::CYAN)
+                        .set_style(Style::BackgroundColor, palette::YELLOW)
+                        .set_style(Style::Color, palette::CYAN)
                         .clone(),
                 )
                 .add_field(Field::new("1.80"))
                 .clone(),
         )
-        .set_style(Style::Color, color::GREEN)
+        .set_style(Style::Color, palette::GREEN)
         .clone()
         .add_row(
             Row::new()
                 .add_field(Field::new("B"))
-                .add_field(Field::new("19").set_style(Style::Color, color::RED))
+                .add_field(Field::new("19").set_style(Style::Color, palette::RED))
                 .add_field(Field::new("-1.70"))
-                .set_style(Style::BackgroundColor, color::BLUE)
+                .set_style(Style::BackgroundColor, palette::BLUE)
                 .clone(),
         )
         .apply_to_column(2, Style::Color, &|content| {
@@ -69,7 +69,7 @@ fn main() -> Result<()> {
             .add_field(Field::new("2"))
             .add_field(Field::new("2021-01-01 00:00:01"))
             .add_field(Field::new("2.0"))
-            .set_style(Style::Color, color::GREEN)
+            .set_style(Style::Color, palette::GREEN)
             .clone(),
     );
 

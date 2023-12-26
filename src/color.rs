@@ -1,7 +1,7 @@
 use crate::utils::string_to_value;
 use regex::Regex;
 
-pub mod color {
+pub mod palette {
     // python seaborn color palette
     pub const BLUE: &str = "#4c72b0";
     pub const GREEN: &str = "#55a868";
@@ -83,7 +83,7 @@ pub(crate) fn validate_color(color: impl Into<String>) -> Option<String> {
 
 #[cfg(test)]
 mod tests {
-    use crate::color_utils::{validate_color, ColorMap};
+    use crate::color::{validate_color, ColorMap};
 
     #[test]
     fn test_validate_color() {

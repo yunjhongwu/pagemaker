@@ -1,4 +1,4 @@
-use crate::color_utils::validate_color;
+use crate::color::validate_color;
 use serde_json::Value;
 use std::fmt::{Display, Formatter};
 
