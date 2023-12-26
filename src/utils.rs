@@ -18,10 +18,13 @@ pub(crate) fn minimize(string: String) -> Vec<u8> {
 }
 
 pub(crate) fn string_to_value(text: &str) -> Option<f64> {
-    if let Some(number_part) = text.strip_suffix('%') {
-        Some(number_part.parse::<f64>().ok()? / 100.0)
-    } else {
-        text.parse::<f64>().ok()
+    let value = match text.strip_suffix('%') {
+        Some(number_part) => number_part.parse::<f64>().ok()? / 100.0,
+        None => text.parse::<f64>().ok()?,
+    };
+    match value.is_finite() {
+        true => Some(value),
+        false => None,
     }
 }
 
