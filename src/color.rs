@@ -1,26 +1,16 @@
+use crate::utils::string_to_value;
 use regex::Regex;
 
-pub mod color {
-    #[allow(unused)]
+pub mod palette {
+    // python seaborn color palette
     pub const BLUE: &str = "#4c72b0";
-    #[allow(unused)]
-    pub const ORANGE: &str = "#55a868";
-    #[allow(unused)]
-    pub const GREEN: &str = "#c44e52";
-    #[allow(unused)]
-    pub const RED: &str = "#8172b2";
-    #[allow(unused)]
-    pub const PURPLE: &str = "#ccb974";
-    #[allow(unused)]
-    pub const BROWN: &str = "#64b5cd";
-    #[allow(unused)]
-    pub const PINK: &str = "#4c72b0";
-    #[allow(unused)]
-    pub const GRAY: &str = "#55a868";
-    #[allow(unused)]
-    pub const YELLOW: &str = "#c44e52";
-    #[allow(unused)]
-    pub const CYAN: &str = "#8172b2";
+    pub const GREEN: &str = "#55a868";
+    pub const RED: &str = "#c44e52";
+    pub const PURPLE: &str = "#8172b2";
+    pub const YELLOW: &str = "#ccb974";
+    pub const CYAN: &str = "#64b5cd";
+    pub const MAGENTA: &str = "#4c72b0";
+    pub const ORANGE: &str = "#ff9e4a";
 }
 
 #[allow(unused)]
@@ -34,7 +24,7 @@ impl ColorMap {
         let mut knots = knots;
         if knots
             .iter()
-            .any(|knot| validate_color(knot.1.as_str()).is_none())
+            .any(|(value, color)| !value.is_finite() || validate_color(color.as_str()).is_none())
         {
             None
         } else {
@@ -44,12 +34,14 @@ impl ColorMap {
         }
     }
 
-    pub fn get_color(&self, value: f64) -> String {
+    pub fn get_color(&self, content: impl Into<String>) -> Option<String> {
+        let value = string_to_value(content.into().as_str())?;
+
         if value < self.knots[0].0 {
-            return self.knots[0].1.clone().to_lowercase();
+            return Some(self.knots[0].1.clone().to_lowercase());
         }
         if value >= self.knots[self.knots.len() - 1].0 {
-            return self.knots[self.knots.len() - 1].1.clone().to_lowercase();
+            return Some(self.knots[self.knots.len() - 1].1.clone().to_lowercase());
         }
         let mut color = String::from("");
         let mut last_knot = &self.knots[0];
@@ -62,7 +54,7 @@ impl ColorMap {
             last_knot = &knot;
         }
 
-        color
+        Some(color)
     }
 
     fn interpolate_color(&self, color1: &str, color2: &str, ratio: f64) -> String {
@@ -80,18 +72,18 @@ impl ColorMap {
     }
 }
 
-pub(crate) fn validate_color(color: &str) -> Option<String> {
+pub(crate) fn validate_color(color: impl Into<String>) -> Option<String> {
     let re = Regex::new(r"^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$").unwrap();
-    if re.is_match(color) {
-        Some(color.to_lowercase())
-    } else {
-        None
+    let color = color.into();
+    match re.is_match(color.as_str()) {
+        true => Some(color.to_lowercase()),
+        false => None,
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::color_utils::{validate_color, ColorMap};
+    use crate::color::{validate_color, ColorMap};
 
     #[test]
     fn test_validate_color() {
@@ -109,10 +101,12 @@ mod tests {
             (1.0, "#C44E52".to_string()),
         ];
         let interpolator = ColorMap::new(knots).unwrap();
-        assert_eq!(interpolator.get_color(0.0), "#4c72b0");
-        assert_eq!(interpolator.get_color(0.25), "#508d8c");
-        assert_eq!(interpolator.get_color(0.5), "#55a868");
-        assert_eq!(interpolator.get_color(0.75), "#8c7b5d");
-        assert_eq!(interpolator.get_color(1.0), "#c44e52");
+        assert_eq!(interpolator.get_color("0.0").unwrap(), "#4c72b0");
+        assert_eq!(interpolator.get_color("0.25").unwrap(), "#508d8c");
+        assert_eq!(interpolator.get_color("0.5").unwrap(), "#55a868");
+        assert_eq!(interpolator.get_color("0.75").unwrap(), "#8c7b5d");
+        assert_eq!(interpolator.get_color("1.0").unwrap(), "#c44e52");
+        assert_eq!(interpolator.get_color("25%").unwrap(), "#508d8c");
+        assert!(interpolator.get_color("NAN").is_none());
     }
 }

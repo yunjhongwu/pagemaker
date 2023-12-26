@@ -1,6 +1,8 @@
 use crate::component::object::Object;
 use crate::component::{Config, TextObject};
+use crate::Style;
 use anyhow::Result;
+use serde_json::Value;
 
 #[derive(Debug, Clone)]
 pub struct Field {
@@ -16,8 +18,20 @@ impl Field {
         }
     }
 
-    pub fn get_content(&self) -> &str {
-        self.content.as_str()
+    pub fn get_content(&self) -> &String {
+        &self.content
+    }
+
+    pub fn apply_style_map<F: Fn(&String) -> Option<Value>>(
+        &mut self,
+        style: Style,
+        style_map: F,
+    ) -> &mut Self {
+        if let Some(value) = style_map(self.get_content()) {
+            self.get_mut_config().set_style(style, value);
+        }
+
+        self
     }
 }
 

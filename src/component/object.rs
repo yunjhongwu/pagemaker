@@ -1,5 +1,7 @@
 use crate::component::Config;
+use crate::Style;
 use anyhow::Result;
+use serde_json::Value;
 
 pub trait Object: Sized {
     fn to_html(&self) -> Result<String>;
@@ -8,20 +10,8 @@ pub trait Object: Sized {
 pub trait ChartObject: Object {}
 
 pub trait TextObject: Object {
-    fn set_text_color(&mut self, color_string: impl Into<String>) -> &mut Self {
-        self.get_mut_config().set_text_color(color_string);
-
-        self
-    }
-
-    fn set_background_color(&mut self, color_string: impl Into<String>) -> &mut Self {
-        self.get_mut_config().set_background_color(color_string);
-
-        self
-    }
-
-    fn set_font_size(&mut self, size: u32) -> &mut Self {
-        self.get_mut_config().set_font_size(size);
+    fn set_style(mut self, style: Style, value: impl Into<Value>) -> Self {
+        self.get_mut_config().set_style(style, value.into());
 
         self
     }
